@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import (QWidget, QPushButton, QLineEdit, QGridLayout,
                                 QLabel, QComboBox, QCheckBox, QTextBrowser,
-                                QProgressBar, QSpacerItem, QSizePolicy)
+                                QProgressBar, QSpacerItem, QSizePolicy, 
+                                QHBoxLayout)
 from PySide6.QtCore import QObject
 
 
@@ -106,25 +107,48 @@ class ProcessSettings(Root):
 
         self.__check_timestamp = QCheckBox("Вставить временную напротив каждой строки")
 
-        self.__label_list = (self.__label_process_settings,
-                             self.__label_model,
-                             self.__label_language,
-                             self.__label_device,
-                             self.__label_quantization,
-                             self.__check_timestamp)
-        
-        self.__combo_list = (self.__combo_model,
-                             self.__combo_language,
-                             self.__combo_device,
-                             self.__combo_quantization)
-        
-        for i in range(0, len(self.__label_list)):
-            self.__layout.addWidget(self.__label_list[i], i, 0)
-        
-        for i in range(0, len(self.__combo_list)):
-            self.__layout.addWidget(self.__combo_list[i], i+1, 1)
-                
+        self.add_horizontal_widgets()
+
         self.setLayout(self.__layout)
+
+    def add_horizontal_widgets(self):
+
+        self.__methods_horizontal_widgets = (self.language(),
+                                             self.model(),
+                                             self.device(),
+                                             self.quantization())
+        
+        for i in range(0, 3):
+            self.__methods_horizontal_widgets[i]
+        
+        self.__list_horizontal_widgets = (self.__language,
+                                          self.__model,
+                                          self.__device,
+                                          self.__quantization)
+        
+        
+        for i in range(0, 3):
+            self.__layout.addLayout(self.__list_horizontal_widgets[i], i, 0)
+    
+    def language(self):
+        self.__language = QHBoxLayout()
+        self.__language.addWidget(self.__label_language, 0)
+        self.__language.addWidget(self.__combo_language, 1)
+
+    def model(self):
+        self.__model = QHBoxLayout()
+        self.__model.addWidget(self.__label_model, 0)
+        self.__model.addWidget(self.__combo_model, 1)
+
+    def device(self):
+        self.__device = QHBoxLayout()
+        self.__device.addWidget(self.__label_device, 0)
+        self.__device.addWidget(self.__combo_device, 1)
+    
+    def quantization(self):
+        self.__quantization = QHBoxLayout()
+        self.__quantization.addWidget(self.__label_quantization, 0)
+        self.__quantization.addWidget(self.__combo_quantization, 1)
 
 class ProcessValues(Root):
     """# Класс `ProcessValues(Root)`
@@ -148,37 +172,72 @@ class ProcessValues(Root):
         self.__label_selected_timestamp = QLabel("Наличие временной метки:")
         self.__label_available_ram_vram = QLabel("Доступно ОЗУ/видеопамяти:")
 
-        self.__label_value_selected_language = QLabel(None)
-        self.__label_value_selected_model = QLabel(None)
-        self.__label_value_selected_device = QLabel(None)
-        self.__label_value_selected_quantization = QLabel(None)
-        self.__label_value_selected_timestamp = QLabel(None)
-        self.__label_value_available_ram_vram = QLabel(None)
+        self.__label_value_selected_language = QLabel("a")
+        self.__label_value_selected_model = QLabel("a")
+        self.__label_value_selected_device = QLabel("a")
+        self.__label_value_selected_quantization = QLabel("a")
+        self.__label_value_selected_timestamp = QLabel("a")
+        self.__label_value_available_ram_vram = QLabel("a")
 
-        self.__label_list = (self.__label_process_values,
-                             self.__label_selected_language, 
-                             self.__label_selected_model, 
-                             self.__label_selected_device, 
-                             self.__label_selected_quantization,
-                             self.__label_selected_timestamp, 
-                             self.__label_available_ram_vram)
-        
-        self.__label_value_list = (self.__label_value_selected_language,
-                                   self.__label_value_selected_model,
-                                   self.__label_value_selected_device,
-                                   self.__label_value_selected_quantization,
-                                   self.__label_value_selected_timestamp,
-                                   self.__label_value_available_ram_vram)
-        
-        for i in range(0, len(self.__label_list)):
-            self.__layout.addWidget(self.__label_list[i], i, 0)
-
-        for i in range(0, len(self.__label_value_list)):
-            self.__layout.addWidget(self.__label_value_list[i], i+1, 1)
-
+        self.add_horizontal_widgets()
         self.__layout.addItem(QSpacerItem(1, 2, QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Expanding), 7, 0)
-
         self.setLayout(self.__layout)
+        
+    def add_horizontal_widgets(self):
+        self.__methods_horizontal_widgets = (self.selected_language(),
+                                             self.selected_model(),
+                                             self.selected_device(),
+                                             self.selected_quantization(),
+                                             self.selected_timestamp(),
+                                             self.available_ram_vram())
+        
+        self.__methods_length = len(self.__methods_horizontal_widgets)
+
+        for i in range(self.__methods_length):
+            self.__methods_horizontal_widgets[i]
+
+        self.__list_horizontal_widgets  = (self.__e_selected_language,
+                                           self.__e_selected_model,
+                                           self.__e_selected_device,
+                                           self.__e_selected_quantization,
+                                           self.__e_timestamp,
+                                           self.__e_available_ram_vram)
+        
+        self.__list_length_horizontal_widgets = len(self.__list_horizontal_widgets)
+
+        for i in range(self.__list_length_horizontal_widgets):
+            self.__layout.addLayout(self.__list_horizontal_widgets[i], i, 0)
+
+
+    def selected_language(self):
+        self.__e_selected_language = QHBoxLayout()
+        self.__e_selected_language.addWidget(self.__label_selected_language, 0)
+        self.__e_selected_language.addWidget(self.__label_value_selected_language, 1)
+    
+    def selected_model(self):
+        self.__e_selected_model = QHBoxLayout()
+        self.__e_selected_model.addWidget(self.__label_selected_model, 0)
+        self.__e_selected_model.addWidget(self.__label_value_selected_model, 1)
+    
+    def selected_device(self):
+        self.__e_selected_device = QHBoxLayout()
+        self.__e_selected_device.addWidget(self.__label_selected_device, 0)
+        self.__e_selected_device.addWidget(self.__label_value_selected_device, 1)
+
+    def selected_quantization(self):
+        self.__e_selected_quantization = QHBoxLayout()
+        self.__e_selected_quantization.addWidget(self.__label_selected_quantization, 0)
+        self.__e_selected_quantization.addWidget(self.__label_value_selected_quantization, 1)
+    
+    def selected_timestamp(self):
+        self.__e_timestamp = QHBoxLayout()
+        self.__e_timestamp.addWidget(self.__label_selected_timestamp, 0)
+        self.__e_timestamp.addWidget(self.__label_value_selected_timestamp, 1)
+    
+    def available_ram_vram(self):
+        self.__e_available_ram_vram = QHBoxLayout()
+        self.__e_available_ram_vram.addWidget(self.__label_available_ram_vram, 0)
+        self.__e_available_ram_vram.addWidget(self.__label_value_available_ram_vram, 1)
 
 class MainWindow(Root):
     """# Класс `MainWindow(Root)`
