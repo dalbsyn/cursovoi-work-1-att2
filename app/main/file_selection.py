@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QGridLayout, QLabel, QPushButton, QLineEdit, QFileDialog
+from PySide6.QtWidgets import (QGridLayout, QLabel, QPushButton, QLineEdit, QFileDialog, QSizePolicy)
+from PySide6.QtGui import (QFont)
 import app.root
 
 class FileSelection(app.root.RootUi):
@@ -22,8 +23,12 @@ class FileSelection(app.root.RootUi):
     def actions(self):
         self.__button_file.clicked.connect(self.file_dialog)
     
+    def customize_ui(self):
+        self.__label_file.setSizePolicy(QSizePolicy().Policy.Maximum, QSizePolicy().Policy.Maximum)
+        self.__label_file.setStyleSheet("font-weight: bold;")
+    
     def file_dialog(self):
         self.__file_dialog = QFileDialog().getOpenFileName()
         self.__root.set_current_file_path(self.__file_dialog[0])
-        print(self.__root.get_current_file_path())
         self.__field_file.setText(self.__root.get_current_file_path())
+        print("Путь до файла: {0};".format(self.__root.get_current_file_path()))

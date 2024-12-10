@@ -57,14 +57,25 @@ class ProcessSettings(app.root.RootUi):
     def actions(self):
         self.__combo_language.activated.connect(self.current_combo_language)
         self.__combo_model.activated.connect(self.current_combo_model)
+        self.__checkbox_timestamp.checkStateChanged.connect(self.current_timestamp)
+    
+    def customize_ui(self):
+        self.__label_process_settings.setStyleSheet("font-weight: bold;")
 
     def current_combo_language(self):
         self.__current_combo_language = self.__combo_language.currentText()
         self.__root.set_current_language(self.__current_combo_language)
+        print("Текущий язык: {0};".format(self.__root.get_current_language()))
     
     def current_combo_model(self):
         self.__current_combo_model = self.__combo_model.currentText()
         self.__root.set_current_model(self.__current_combo_model)
+        print("Текущая модель: {0}".format(self.__root.get_current_model()))
+    
+    def current_timestamp(self):
+        self.__current_timestamp = self.__checkbox_timestamp.isChecked()
+        self.__root.set_current_timestamp(self.__current_timestamp)
+        print(self.__root.get_current_timestamp())
     
     def fill_combo_language(self):
         for i in faster_whisper.tokenizer._LANGUAGE_CODES:

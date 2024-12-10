@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QWidget
+from PySide6.QtCore import QObject
 
 class Root:
     def __init__(self):
@@ -7,6 +8,8 @@ class Root:
         self.__current_file_path = None
         self.__current_language = None
         self.__current_model = None
+        self.__current_timestamp = None
+    
     
     def set_current_file_path(self, value: str):
         self.__current_file_path = value
@@ -16,6 +19,13 @@ class Root:
 
     def set_current_model(self, value: str):
         self.__current_model = value
+    
+    def set_current_timestamp(self, value: bool):
+        if value == True:
+            self.__current_timestamp = ("Да", True)
+        
+        else:
+            self.__current_timestamp = ("Нет", False)
 
     def get_current_file_path(self):
         return self.__current_file_path
@@ -25,6 +35,9 @@ class Root:
     
     def get_current_model(self):
         return self.__current_model
+    
+    def get_current_timestamp(self):
+        return self.__current_timestamp
 
 class RootUi(QWidget):
     """# Класс `RootUI(Qwidget)`

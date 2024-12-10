@@ -22,4 +22,5 @@ class Test(app.root.RootUi):
         print("Путь до файла: {0};".format(self.__root.get_current_file_path()))
         print("Текущий язык: {0};".format(self.__root.get_current_language()))
         print("Текущая модель: {0}".format(self.__root.get_current_model()))
+        print("Текущее состояние временной метки: {0}".format(self.__root.get_current_timestamp()))
         print("====")

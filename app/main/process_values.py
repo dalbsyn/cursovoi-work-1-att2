@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import (QGridLayout, QLabel, QComboBox, QHBoxLayout)
+from PySide6.QtWidgets import (QGridLayout, QLabel, QComboBox, QHBoxLayout, QSpacerItem, QSizePolicy)
 import app.root
 
 class ProcessValues(app.root.RootUi):
@@ -52,6 +52,11 @@ class ProcessValues(app.root.RootUi):
         self.__layout.addWidget(self.__label_process_values, 0, 0, 1, 2)
         for i in range(self.__amount_entries):
             self.__layout.addLayout(self.__list_entries[i], i+1, 0, 1, 2)
+        
+        self.__layout.addItem(QSpacerItem(1, 2, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding), 7, 0)
+    
+    def customize_ui(self):
+        self.__label_process_values.setStyleSheet("font-weight: bold;")
     
     def selected_language(self):
         self.__selected_language = QHBoxLayout()
