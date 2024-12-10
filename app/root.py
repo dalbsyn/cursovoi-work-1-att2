@@ -7,8 +7,10 @@ class Root:
 
         self.__current_file_path = None
         self.__current_language = None
-        self.__current_model = None
-        self.__current_timestamp = None
+        self.__current_model = "auto"
+        self.__current_timestamp = ("Нет", False)
+        self.__current_device = "cpu"
+        self.__current_quantization = "int8"
     
     
     def set_current_file_path(self, value: str):
@@ -21,11 +23,19 @@ class Root:
         self.__current_model = value
     
     def set_current_timestamp(self, value: bool):
+        self.__current_timestamp = ("Нет", False)
+        
         if value == True:
             self.__current_timestamp = ("Да", True)
         
         else:
             self.__current_timestamp = ("Нет", False)
+
+    def set_current_device(self, value: str):
+        self.__current_device = value
+        
+    def set_current_quantization(self, value: str):
+        self.__current_quantization = value
 
     def get_current_file_path(self):
         return self.__current_file_path
@@ -38,6 +48,12 @@ class Root:
     
     def get_current_timestamp(self):
         return self.__current_timestamp
+
+    def get_current_device(self):
+        return self.__current_device
+    
+    def get_current_quantization(self):
+        return self.__current_quantization
 
 class RootUi(QWidget):
     """# Класс `RootUI(Qwidget)`

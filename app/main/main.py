@@ -25,6 +25,6 @@ class MainWindow(app.root.RootUi):
     def add_ui(self):
         self.__layout.addWidget(self.__file_selection, 0, 0)
         self.__layout.addWidget(self.__process_settings, 1, 0)
-        self.__layout.addWidget(self.__process_values, 2, 0)
-        self.__layout.addWidget(self.__test, 3, 0)
+        #self.__layout.addWidget(self.__process_values, 2, 0)
+        #self.__layout.addWidget(self.__test, 3, 0)
         self.__layout.addWidget(self.__output, 0, 1, 4, 1)

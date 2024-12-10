@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import (QGridLayout, QLabel, QPushButton, QLineEdit, QFileDialog, QSizePolicy)
+from PySide6.QtWidgets import (QGridLayout, QLabel, QPushButton, QLineEdit, 
+                               QFileDialog, QSizePolicy)
 from PySide6.QtGui import (QFont)
 import app.root
 
@@ -16,16 +17,20 @@ class FileSelection(app.root.RootUi):
         self.setLayout(self.__layout)
 
     def add_ui(self):
-        self.__layout.addWidget(self.__label_file, 0, 0)
-        self.__layout.addWidget(self.__field_file, 1, 0)
-        self.__layout.addWidget(self.__button_file, 1, 1)
+        self.__layout.addWidget(self.__label_file, 0, 0, 1, 2)
+        self.__layout.addWidget(self.__field_file, 1, 0, 1, 1)
+        self.__layout.addWidget(self.__button_file, 1, 1, 1, 1)
     
     def actions(self):
         self.__button_file.clicked.connect(self.file_dialog)
     
     def customize_ui(self):
-        self.__label_file.setSizePolicy(QSizePolicy().Policy.Maximum, QSizePolicy().Policy.Maximum)
+        self.__label_file.setSizePolicy(QSizePolicy().Policy.Maximum, QSizePolicy().Policy.Fixed)
         self.__label_file.setStyleSheet("font-weight: bold;")
+        
+        self.__field_file.setSizePolicy(QSizePolicy().Policy.Minimum, QSizePolicy().Policy.Fixed)
+
+        self.__button_file.setSizePolicy(QSizePolicy().Policy.Maximum, QSizePolicy().Policy.Fixed)
     
     def file_dialog(self):
         self.__file_dialog = QFileDialog().getOpenFileName()

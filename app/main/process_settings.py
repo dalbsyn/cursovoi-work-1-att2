@@ -1,6 +1,8 @@
-from PySide6.QtWidgets import (QGridLayout, QLabel, QComboBox, QCheckBox)
+from PySide6.QtWidgets import (QGridLayout, QLabel, QComboBox, QCheckBox, 
+                               QSizePolicy, QSpacerItem) 
 import faster_whisper.tokenizer
 import faster_whisper.utils
+import ctranslate2
 import app.root
 
 class ProcessSettings(app.root.RootUi):
@@ -11,6 +13,7 @@ class ProcessSettings(app.root.RootUi):
 
         self.fill_combo_language()
         self.fill_combo_models()
+        self.fill_devices()
 
     def setup_ui(self):
         self.__layout = QGridLayout()
@@ -57,10 +60,18 @@ class ProcessSettings(app.root.RootUi):
     def actions(self):
         self.__combo_language.activated.connect(self.current_combo_language)
         self.__combo_model.activated.connect(self.current_combo_model)
+        self.__combo_device.activated.connect(self.current_device)
+        self.__combo_quantization.activated.connect(self.current_quantization)
         self.__checkbox_timestamp.checkStateChanged.connect(self.current_timestamp)
+        self.__combo_device.currentTextChanged.connect(self.fill_quantizaton)
     
     def customize_ui(self):
         self.__label_process_settings.setStyleSheet("font-weight: bold;")
+
+        for i in range(self.__amount_labels):
+            self.__list_labels[i].setSizePolicy(QSizePolicy().Policy.Fixed, QSizePolicy().Policy.Fixed)
+        for i in range(self.__amount_combos):
+            self.__list_combos[i].setSizePolicy(QSizePolicy().Policy.Ignored, QSizePolicy().Policy.Fixed)
 
     def current_combo_language(self):
         self.__current_combo_language = self.__combo_language.currentText()
@@ -75,7 +86,7 @@ class ProcessSettings(app.root.RootUi):
     def current_timestamp(self):
         self.__current_timestamp = self.__checkbox_timestamp.isChecked()
         self.__root.set_current_timestamp(self.__current_timestamp)
-        print(self.__root.get_current_timestamp())
+        print(self.__root.get_current_timestamp(), ctranslate2.get_supported_compute_types("cpu"))
     
     def fill_combo_language(self):
         for i in faster_whisper.tokenizer._LANGUAGE_CODES:
@@ -84,3 +95,29 @@ class ProcessSettings(app.root.RootUi):
     def fill_combo_models(self):
         for i in faster_whisper.utils._MODELS:
             self.__combo_model.addItem(i)
+    
+    def fill_devices(self):
+        self.__combo_device.addItem("cpu")
+        self.__combo_device.addItem("cuda")
+    
+    def fill_quantizaton(self):
+        if self.__root.get_current_device() == "cpu":
+            self.__combo_quantization.clear()
+            for i in ctranslate2.get_supported_compute_types("cpu"):
+                self.__combo_quantization.addItem(i)
+        
+        elif self.__root.get_current_device() == "cuda":
+            self.__combo_quantization.clear()
+            for i in ctranslate2.get_supported_compute_types("cuda"):
+                self.__combo_quantization.addItem(i) 
+
+    def current_device(self):
+        self.__current_device = self.__combo_device.currentText()
+        self.__root.set_current_device(self.__current_device)
+        print(self.__root.get_current_device())
+
+    def current_quantization(self):
+        self.__current_quantization = self.__combo_quantization.currentText()
+        self.__root.set_current_quantization(self.__current_quantization)
+        print(self.__root.get_current_quantization())
+    
